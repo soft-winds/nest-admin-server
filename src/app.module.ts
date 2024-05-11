@@ -3,11 +3,12 @@ import { UserModule } from './modules/system/user/user.module';
 import { LogModule } from './modules/system/log/log.module';
 import { RoleModule } from './modules/system/role/role.module';
 import { MenuModule } from './modules/system/menu/menu.module';
-import { EpubookModule } from './modules/book/epubook/epubook.module';
+import { EpubookModule } from './modules/cms/epubook/epubook.module';
 import * as Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DatabaseConfigEnum } from './enum/config.enum';
+import { AuthModule } from './modules/auth/auth.module';
 const envFilePath = [`.env.${process.env.NODE_ENV || 'development'}`, `.env`];
 
 @Global()
@@ -56,6 +57,7 @@ const envFilePath = [`.env.${process.env.NODE_ENV || 'development'}`, `.env`];
     RoleModule,
     MenuModule,
     EpubookModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [Logger],
