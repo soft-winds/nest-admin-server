@@ -16,7 +16,6 @@ export class RoleService {
 
   async findAll(queryRoleDto: QueryRoleDto) {
     const { page, pageSize, name, code, status } = queryRoleDto;
-    console.log(name, 'name');
 
     const where = {
       ...(name ? { name: Like(`%${name}%`) } : null),

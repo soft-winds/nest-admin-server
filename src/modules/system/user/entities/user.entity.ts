@@ -6,7 +6,6 @@ import {
   JoinTable,
   ManyToMany,
   OneToOne,
-  Unique,
 } from 'typeorm';
 import { Role } from '../../role/entities/role.entity';
 import { Perfile } from './perfile.entity';
@@ -19,7 +18,7 @@ export class User extends Base_Entities {
   @Column({ comment: '用户密码' })
   password: string;
 
-  @JoinTable({ name: 'user_role' })
+  @JoinTable({ name: 'sys_user_role' })
   @ManyToMany(() => Role, (role) => role.user, { cascade: true })
   role: Role[];
 

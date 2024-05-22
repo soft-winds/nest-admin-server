@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { In, Like, Repository } from 'typeorm';
 import { Role } from '../role/entities/role.entity';
-
+import * as argon2 from 'argon2';
 @Injectable()
 export class UserService {
   constructor(
@@ -20,7 +20,10 @@ export class UserService {
     const role = await this.roleRepository.find({
       where: { id: In(createUserDto.role) },
     });
+
     createUserDto.role = role;
+    // 密码加密
+    createUserDto.password = await argon2.hash(createUserDto.password);
     const data = await this.userRepository.create(createUserDto);
     return this.userRepository.save(data);
   }
@@ -57,6 +60,14 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('用户不存在');
     }
+    return user;
+  }
+
+  async findOneByUsername(username: string) {
+    const user = await this.userRepository.findOne({
+      where: { username },
+      relations: { role: true, perfile: true },
+    });
     return user;
   }
 
