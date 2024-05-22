@@ -10,7 +10,6 @@ import { ErrorEnum } from 'src/enum/error.enum';
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../system/user/dto/user.dto';
-import { jwtConstants } from './auth.constants';
 @Injectable()
 export class AuthService {
   constructor(
@@ -31,8 +30,11 @@ export class AuthService {
       throw new ForbiddenException(ErrorEnum.USER_OR_PASSWOR_ERROR);
     }
     const payload = { sub: user.id, username: user.username };
+    delete user.password;
+
     return {
       access_token: await this.jwtService.signAsync(payload),
+      ...user,
     };
   }
 
@@ -47,9 +49,6 @@ export class AuthService {
     delete res.password;
     return res;
   }
-
-  //   登出
-  signout() {}
 
   //  重置密码
   resetPassword() {
